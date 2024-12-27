@@ -22,6 +22,20 @@ contract Multicall {
         }
     }
 
+    function multicallView(
+        Call[] calldata calls
+    ) external view returns (uint256 blockNumber, bytes[] memory results) {
+        blockNumber = block.number;
+        results = new bytes[](calls.length);
+        for (uint256 i = 0; i < calls.length; i++) {
+            (bool success, bytes memory result) = calls[i].target.staticcall(
+                calls[i].callData
+            );
+            require(success, "Multicall: call failed");
+            results[i] = result;
+        }
+    }
+
 
     function getBlockHash(
         uint256 blockNumber

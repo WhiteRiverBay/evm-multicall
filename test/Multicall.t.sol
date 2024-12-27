@@ -43,7 +43,7 @@ contract MulticallTest is Test {
         calls[0] = Call(address(multicall), abi.encodeWithSelector(multicall.getEthBalance.selector, addr));
         calls[1] = Call(address(multicall), abi.encodeWithSelector(multicall.getEthBalance.selector, addr2));
 
-        (, bytes[] memory results) = multicall.multicall(calls);
+        (, bytes[] memory results) = multicall.multicallView(calls);
 
         assertEq(abi.decode(results[0], (uint256)), 1000);
         assertEq(abi.decode(results[1], (uint256)), 2000);
@@ -58,7 +58,7 @@ contract MulticallTest is Test {
         calls[0] = Call(address(token), abi.encodeWithSelector(token.balanceOf.selector, address(1)));
         calls[1] = Call(address(token), abi.encodeWithSelector(token.balanceOf.selector, address(2)));
 
-        (, bytes[] memory results) = multicall.multicall(calls);
+        (, bytes[] memory results) = multicall.multicallView(calls);
 
         assertEq(abi.decode(results[0], (uint256)), 1000);
         assertEq(abi.decode(results[1], (uint256)), 2000);  
